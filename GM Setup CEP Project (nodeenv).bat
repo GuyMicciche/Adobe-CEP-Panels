@@ -48,11 +48,15 @@ if errorlevel 1 (
 
 :: Create nodeenv with latest Node.js
 echo [2/7] Creating nodeenv with Node.js...
-python -m nodeenv --node=22.20.0 %ENV_NAME%
-if errorlevel 1 (
-    echo ERROR: Failed to create nodeenv
-    pause
-    exit /b 1
+if exist "%ENV_NAME%" (
+    echo Environment "%ENV_NAME%" already exists, skipping creation...
+) else (
+    python -m nodeenv --node=22.20.0 "%ENV_NAME%"
+    if errorlevel 1 (
+        echo ERROR: Failed to create nodeenv
+        pause
+        exit /b 1
+    )
 )
 
 :: Activate the environment
@@ -127,4 +131,5 @@ echo To reactivate the environment later, run:
 echo   %ENV_NAME%\Scripts\Activate
 echo.
 echo Happy coding!
+
 pause
